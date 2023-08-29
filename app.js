@@ -4,11 +4,14 @@ const solutionDisplay = document.querySelector('#solution')
 const squares = 81
 let submission = []
 
+// loop over puzzleboard
 for (let i = 0; i < squares; i++) {
     const inputElement = document.createElement('input')
+    // set data attributes for cells
     inputElement.setAttribute('type', 'number')
     inputElement.setAttribute('min', '1')
     inputElement.setAttribute('max', '9')
+    // set background for puzzleboard design
     if ( 
         ((i % 9 == 0 || i % 9 == 1 || i % 9 == 2) && i < 21) ||
         ((i % 9 == 6 || i % 9 == 7 || i % 9 == 8) && i < 27) ||
@@ -18,10 +21,11 @@ for (let i = 0; i < squares; i++) {
     ) {
         inputElement.classList.add('odd-section')
     }
-    
+    // add each cell to puzzleboard object
     puzzleBoard.appendChild(inputElement)
 }
 
+// function to create array based on user input
 const joinValues = () => {
     const inputs = document.querySelectorAll('input')
     inputs.forEach(input => {
@@ -34,8 +38,10 @@ const joinValues = () => {
     console.log(submission)
 }
 
+// function to populate board after response from api
 const populateValues = (isSolvable, solution) => {
     const inputs = document.querySelectorAll('input')
+    // if puzzle solvable, populate board with data from api
     if (isSolvable && solution) {
         inputs.forEach((input, i) => {
             input.value = solution[i]
@@ -51,6 +57,7 @@ const solve = () => {
     const data = {numbers: submission.join('')}
     console.log('data1', data)
 
+    // send user data to server
     fetch('http://localhost:8080/solve', {
         method: 'POST',
         headers: {
@@ -59,8 +66,10 @@ const solve = () => {
         },
         body: JSON.stringify(data),
     })  .then(response => response.json())
+        // get data back from server
         .then(data => {
             console.log('data2', data)
+            // send data to populate board, if solvable
             populateValues(data.solvable, data.solution)
             submission = []
         })
