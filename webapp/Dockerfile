@@ -6,4 +6,4 @@ WORKDIR /webapp
 
 RUN pip install -r requirements.txt
 
-CMD python3 backend.py
+CMD export FLASK_APP=backend.py;flask run --host=0.0.0.0
