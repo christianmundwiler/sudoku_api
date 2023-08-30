@@ -1,21 +1,25 @@
 from flask import Flask, request, render_template
 from flask_cors import CORS
+from json import loads
+from dotenv import load_dotenv
 import requests
 import os
 
-from json import loads, dumps
+load_dotenv()
 
 app = Flask(__name__, template_folder="templates/pages", static_folder="templates/static")
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+# render and run front end
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# flask endpoint to receive request from front end, forward to sudoku api, send back response
 @app.route("/solve", methods=["POST"])
 def solve():
-    request_data = loads(request.get_data())
+    request_data = request.get_data()
     print(request_data)
     response = requests.post("https://solve-sudoku.p.rapidapi.com/",
         headers = {
@@ -23,7 +27,7 @@ def solve():
             "X-RapidAPI-Key": os.getenv("RAPID_API_KEY"),
             "Content-Type": "application/json"
         },
-        data = dumps(request_data)
+        data = request_data
     )
     response_result = loads(response.text)
     print(response_result)
