@@ -54,11 +54,11 @@ const populateValues = (isSolvable, solution) => {
 
 const solve = () => {
     joinValues()
-    const data = {numbers: submission.join('')}
+    const data = {puzzle: submission.join('')}
     console.log('data1', data)
 
     // send user data to server
-    fetch('http://localhost:8080/solve', {
+    fetch('http://localhost:5000/solve', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
