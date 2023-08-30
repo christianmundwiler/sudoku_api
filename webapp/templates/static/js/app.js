@@ -58,7 +58,7 @@ const solve = () => {
     console.log('data1', data)
 
     // send user data to server
-    fetch('http://localhost:5000/solve', {
+    fetch('http://0.0.0.0:5000/solve', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
